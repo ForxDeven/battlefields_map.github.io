@@ -1,0 +1,14 @@
+project:
+  type: website
+
+website:
+  title: "battlefields_map.github.io"
+
+format:
+  html:
+    theme: cosmo
+    css: styles.css
+    toc: true
+
+editor: visual
+

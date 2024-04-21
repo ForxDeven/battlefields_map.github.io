@@ -1,0 +1,59 @@
+---
+title: "Battlefields"
+subtitle: "This map is a point map of battlefields based on the data provided by Planning Data Platform of British Government"
+author: "[Ali Altuntaş](https://github.com/ForxDeven)"
+date: "2024-04-21"
+format: html
+editor: visual
+---
+
+Dataset: [*https://www.planning.data.gov.uk/dataset/battlefield*](https://www.planning.data.gov.uk/dataset/battlefield)
+
+```{r libraries, include=FALSE}
+#include necessary libraries
+library(tidyverse)
+library(dplyr)
+library(magrittr)
+library(ggplot2)
+library(leaflet)
+```
+
+```{r data, echo=FALSE}
+battlefields <- read.csv('https://files.planning.data.gov.uk/dataset/battlefield.csv') #import the data set from planning.gov.uk
+
+#code below turns point column into latitude and longitude columns
+battlefields <- battlefields %>% mutate(long_lat = substr(point, start= 7, stop=25)) #remove "POINT()" part
+battlefields <- battlefields %>% mutate(long = as.numeric(substr(long_lat, start= 1, stop=9))) #take the longitude and make it a new column
+battlefields <- battlefields %>% mutate(lat = as.numeric(substr(long_lat, start= 11, stop=18))) #take the latitude and make it a new column
+```
+
+```{r map, echo=FALSE}
+
+#the code below creates the map
+battlefields %>%
+  leaflet() %>%
+  addProviderTiles("Esri")%>% #use Esri map
+  addMarkers(~long, ~lat,     #set longitude and latitude for the markers    
+             label = ~name,   #set label for the markers
+             popup = paste0("<b> Name: </b>", battlefields$name,"<br>",  #Popup settings
+                            "<b> Wikipedia: </b>", battlefields$wikipedia,"<br>",
+                            "<b> Wikidata: </b>", battlefields$wikidata,"<br>",
+                            "<b> Document URL: </b>", battlefields$document.url,"<br>",
+                            "<b> Documentation URL: </b>", battlefields$documentation.url,"<br>")) %>%
+  setView(lng = -2.3252278,lat = 53.603176, zoom = 5.5) #Set the view: Set center coordinates longitude as 2.3252278 and latitude as 53.603176. Set zoom to 5.5
+```
+
+```{r show_on_the_website, eval=FALSE}
+#the code below creates the map
+battlefields %>%
+  leaflet() %>%
+  addProviderTiles("Esri")%>% #use Esri map
+  addMarkers(~long, ~lat,     #set longitude and latitude for the markers    
+             label = ~name,   #set label for the markers
+             popup = paste0("<b> Name: </b>", battlefields$name,"<br>",  #Popup settings
+                            "<b> Wikipedia: </b>", battlefields$wikipedia,"<br>",
+                            "<b> Wikidata: </b>", battlefields$wikidata,"<br>",
+                            "<b> Document URL: </b>", battlefields$document.url,"<br>",
+                            "<b> Documentation URL: </b>", battlefields$documentation.url,"<br>")) %>%
+  setView(lng = -2.3252278,lat = 53.603176, zoom = 5.5) #Set the view: Set center coordinates longitude as 2.3252278 and latitude as 53.603176. Set zoom to 5.5
+```
