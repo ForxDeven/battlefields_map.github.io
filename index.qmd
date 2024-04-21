@@ -1,7 +1,7 @@
 ---
 title: "Battlefields"
 subtitle: "This map is a point map of battlefields based on the data provided by Planning Data Platform of British Government"
-author: "[Ali Altuntaş](https://github.com/ForxDeven)"
+author: "[Ali Altuntaş](https://github.com/ForxDeven), Rubar Akyıldız"
 date: "2024-04-21"
 format: html
 editor: visual
